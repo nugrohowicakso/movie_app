@@ -18,12 +18,3 @@ export default [
     },
   },
 ];
-
-  {
-    settings: {
-      react: {
-        version: "detect", // Secara otomatis mendeteksi versi React
-      },
-    },
-  },
-];
