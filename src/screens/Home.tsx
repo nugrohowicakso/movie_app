@@ -1,10 +1,20 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React from 'react';
+import { Button, View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Home(): JSX.Element {
+const Home = () => {
+  const navigation: any = useNavigation();
+
+  const goToMovieDetail = () => {
+    navigation.navigate('MovieDetail');
+  };
+
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button title="Go to Movie Detail" onPress={goToMovieDetail} />
     </View>
-  )
-}
+  );
+};
+
+export default Home;
