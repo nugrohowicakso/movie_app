@@ -1,7 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Feather } from '@expo/vector-icons'
+<<<<<<< HEAD
 import Home from '../screens/Home'
+=======
+import Home from '../screens/Favorite'
+>>>>>>> 425f0f93bdb336537babef14c5a6bf29e2630ce7
 import Search from '../screens/Search'
 import Favorite from '../screens/Favorite'
 
