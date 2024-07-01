@@ -1,17 +1,27 @@
-import React from 'react';
-import { Button, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, StatusBar, StyleSheet, Button, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { API_URL, API_ACCESS_TOKEN } from '@env'
+import { API_URL, API_ACCESS_TOKEN } from '@env';
+
+interface Movie {
+  id: number;
+  title: string;
+  overview: string;
+  // Tambahkan properti lain yang diperlukan
+}
 
 const MovieDetailScreen = (): JSX.Element => {
   const navigation = useNavigation();
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = (): void => {
-    // Gantilah dengan akses token Anda
-
     if (API_URL == null || API_ACCESS_TOKEN == null) {
-        throw new Error('ENV not found')
-      }
+      throw new Error('ENV not found');
+    }
 
     const options = {
       method: 'GET',
@@ -24,6 +34,7 @@ const MovieDetailScreen = (): JSX.Element => {
     fetch(API_URL, options)
       .then(async (response) => await response.json())
       .then((response) => {
+        setMovies(response.results);
         console.log(response);
       })
       .catch((err) => {
@@ -36,33 +47,47 @@ const MovieDetailScreen = (): JSX.Element => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Movie Detail Screen</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>Movie Detail Screen</Text>
       <Button title="Fetch Data" onPress={fetchData} />
       <Button title="Go back to Home" onPress={goBackToHome} />
-    </View>
+      {movies.map((movie) => (
+        <View key={movie.id} style={styles.movieContainer}>
+          <Text style={styles.title}>{movie.title}</Text>
+          <Text style={styles.overview}>{movie.overview}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  movieContainer: {
+    marginBottom: 16,
+    padding: 16,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    width: '100%',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  overview: {
+    fontSize: 14,
+    color: '#555',
+  },
+});
+
 export default MovieDetailScreen;
-
-// import React from 'react';
-// import { Button, View, Text } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-
-// const MovieDetailScreen = (): JSX.Element => {
-//   const navigation = useNavigation();
-
-//   const goBackToHome = () => {
-//     navigation.goBack();
-//   };
-
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       <Text>Movie Detail Screen</Text>
-//       <Button title="Go back to Home" onPress={goBackToHome} />
-//     </View>
-//   );
-// };
-
-// export default MovieDetailScreen;
